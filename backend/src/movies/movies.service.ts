@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class MoviesService {
   constructor(
-    @InjectRepository(Movie) private readonly moviesRepository: Repository<Movie>,
+    @InjectRepository(Movie) private moviesRepository: Repository<Movie>,
   ) { }
 
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
