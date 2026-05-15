@@ -10,21 +10,21 @@ export enum MovieRating {
 
 @Entity('movies')
 export class Movie {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ length: 200 })
   title!: string;
 
-  @Column({ type: 'int' })
-  year_released!: number;
+  @Column({ name: 'year_released', type: 'int' })
+  yearReleased!: number;
 
   @Column({ type: 'enum', enum: MovieRating })
   rating!: MovieRating;
 
-  @CreateDateColumn()
-  created_at!: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt!: Date;
 
-  @UpdateDateColumn()
-  updated_at!: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt!: Date;
 }
