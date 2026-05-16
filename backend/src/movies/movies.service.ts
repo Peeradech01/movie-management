@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class MoviesService {
   constructor(
-    @InjectRepository(Movie) private moviesRepository: Repository<Movie>,
+    @InjectRepository(Movie) private readonly moviesRepository: Repository<Movie>,
   ) { }
 
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
@@ -44,6 +44,6 @@ export class MoviesService {
   async remove(id: number): Promise<{ message: string }> {
     const movie = await this.findOne(id);
     await this.moviesRepository.remove(movie);
-    return { message: 'Movie deleted successfully' };
+    return { message: 'Movie deleted successful' };
   }
 }
