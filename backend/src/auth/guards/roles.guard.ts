@@ -12,7 +12,6 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    // Route นี้ไม่ได้กำหนด role → ผ่านได้เลย
     if (!requiredRoles?.length) {
       return true;
     }

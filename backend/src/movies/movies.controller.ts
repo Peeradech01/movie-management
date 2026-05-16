@@ -6,7 +6,6 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { HttpCode, HttpStatus } from '@nestjs/common';
 
 @Controller('movies')
 @UseGuards(JwtAuthGuard)
