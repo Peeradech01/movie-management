@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private usersRepository: Repository<User>,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -40,6 +40,14 @@ export class UsersService {
     const user = await this.usersRepository.findOne({ where: { id } });
     if (!user) {
       throw new BadRequestException(`User ${id} not found`);
+    }
+    return user;
+  }
+
+  async findByUsername(username: string): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { username } });
+    if (!user) {
+      throw new BadRequestException(`User ${username} not found`);
     }
     return user;
   }
