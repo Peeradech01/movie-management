@@ -17,7 +17,11 @@ export class UsersController {
   @Get('profile')
   async getProfile(@Request() req) {
     const user = await this.usersService.findByUsername(req.user.username);
-    return user;
+    return {
+      userId: user.id,
+      username: user.username,
+      role: user.role
+    };
   }
 
   @Get()
