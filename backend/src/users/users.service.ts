@@ -12,7 +12,7 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) { }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async register(createUserDto: CreateUserDto): Promise<User> {
     const usernameIsExist = await this.usersRepository.existsBy({ username: createUserDto.username });
     if (usernameIsExist) throw new BadRequestException('Username already exists');
 

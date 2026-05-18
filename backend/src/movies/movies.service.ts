@@ -20,10 +20,13 @@ export class MoviesService {
     }
   }
 
-  async findAll(): Promise<Movie[]> {
-    return await this.moviesRepository.find({
-      order: { id: 'ASC' }
+  async findAll(page: number, limit: number): Promise<{ data: Movie[]; total: number }> {
+    const [data, total] = await this.moviesRepository.findAndCount({
+      order: { id: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
     });
+    return { data, total };
   }
 
   async findOne(id: number): Promise<Movie> {
