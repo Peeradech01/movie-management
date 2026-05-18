@@ -2,8 +2,6 @@
 
 เว็บแอปพลิเคชันสำหรับจัดการข้อมูลภาพยนตร์ (CRUD) โปรเจคนี้พัฒนาโดยใช้ React, NestJS, PostgreSQL, Docker
 
----
-
 ## Tech Stack
 
 | Layer            | Stack                                    |
@@ -17,7 +15,6 @@
 | Container        | Docker + Docker Compose                  |
 | API Architecture | REST API                                 |
 
----
 
 ## Features
 
@@ -30,7 +27,6 @@
 - ระบบล็อกอิน / ลงทะเบียน / ออกจากระบบ
 - แบ่งหน้าข้อมูล (Pagination)
 
----
 
 ## Project Structure
 
@@ -50,9 +46,7 @@ movie-management/
 └── README.md
 ```
 
----
-
-## การติดตั้งและใช้งาน (Docker) — วิธีที่แนะนำ
+## การติดตั้งและใช้งาน (Docker)
 
 ### ขั้นตอนที่ 1 — Clone โปรเจกต์
 
@@ -60,8 +54,6 @@ movie-management/
 git clone https://github.com/Peeradech01/movie-management.git
 cd movie-management
 ```
-
----
 
 ### ขั้นตอนที่ 2 — ตั้งค่า Environment Variables
 
@@ -90,8 +82,6 @@ VITE_API_URL=http://localhost:3000
 FRONTEND_URL=http://localhost:5173
 ```
 
----
-
 ### ขั้นตอนที่ 3 — รัน Docker
 
 ```bash
@@ -100,7 +90,6 @@ docker-compose up --build
 
 ใช้สำหรับ Build Docker Image จากไฟล์ Dockerfile และรัน Container ขึ้นมาทำงานพร้อมกันในคำสั่งเดียว เพื่อรันทั้ง Frontend, Backend และ Database
 
----
 
 ### ขั้นตอนที่ 4 — เปิดใช้งาน
 
@@ -112,60 +101,6 @@ docker-compose up --build
 | Backend API  | http://localhost:3000        |
 | Health Check | http://localhost:3000/health |
 
----
-
-## การติดตั้งและรันบนเครื่องโดยตรง (ไม่ใช้ Docker)
-
-### Backend
-
-```bash
-cd backend
-
-# ติดตั้ง Dependencies
-npm install
-
-# ตั้งค่า Environment
-cp .env.example .env
-```
-
-แก้ไขไฟล์ `backend/.env` ดังนี้
-
-```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=your_password  ← กำหนดรหัสผ่านที่ต้องการ
-DB_NAME=postgres
-JWT_SECRET=your_secret     ← กำหนด Secret Key ที่ปลอดภัย
-PORT=3000
-FRONTEND_URL=http://localhost:5173
-```
-
-```bash
-# รัน Development Server
-npm run start:dev
-```
-
-### Frontend
-
-```bash
-cd frontend
-
-# ติดตั้ง Dependencies
-npm install
-
-# ตั้งค่า Environment
-cp .env.example .env
-```
-
-รัน Frontend ด้วยคำสั่งนี้
-
-```bash
-# รัน Development Server
-npm run dev
-```
-
----
 
 ## Users สำหรับทดสอบ
 
@@ -176,8 +111,6 @@ npm run dev
 | MANAGER    | manager  | 123456   |
 | TEAMLEADER | leader   | 123456   |
 | FLOORSTAFF | staff    | 123456   |
-
----
 
 ## API Endpoints
 
@@ -203,8 +136,6 @@ npm run dev
 | ------ | ----------------- | ---------------------- |
 | POST   | `/users/register` | ลงทะเบียนผู้ใช้ใหม่    |
 | GET    | `/users/profile`  | ดูข้อมูลผู้ใช้ปัจจุบัน |
-
----
 
 ## วิธีแก้ไขถ้า Port ชนกัน
 
@@ -234,8 +165,6 @@ DB_PORT=5433
 docker-compose down
 docker-compose up --build
 ```
-
----
 
 ## รายละเอียด Environment Variables
 
