@@ -19,7 +19,6 @@ const AuthStore = types
     },
   }))
   .actions((self) => ({
-    // โหลดค่าจาก localStorage ตอนเปิด
     hydrate() {
       const username = localStorage.getItem('username');
       const role = localStorage.getItem('role');
@@ -30,6 +29,10 @@ const AuthStore = types
         self.role = role as UserRole;
         self.userId = Number(userId);
       }
+    },
+
+    setError(message: string | null) {
+      self.error = message;
     },
 
     login: flow(function* (username: string, password: string) {
@@ -43,12 +46,24 @@ const AuthStore = types
         self.username = profile.username;
         self.role = profile.role;
 
-        // บันทึกลง localStorage
         localStorage.setItem('username', profile.username);
         localStorage.setItem('role', profile.role);
         localStorage.setItem('userId', String(profile.userId));
       } catch {
         self.error = 'Invalid username or password';
+      } finally {
+        self.isLoading = false;
+      }
+    }),
+
+    register: flow(function* (username: string, password: string, role: string, firstName: string, lastName: string) {
+      self.isLoading = true;
+      self.error = null;
+      try {
+        yield authApi.register(username, password, role, firstName, lastName);
+      } catch {
+        self.error = 'Registration failed. Username may already exist.';
+        throw new Error(self.error ?? 'Registration failed');
       } finally {
         self.isLoading = false;
       }
@@ -60,7 +75,6 @@ const AuthStore = types
       self.username = null;
       self.role = null;
 
-      // ลบข้อมูลใน localStorage
       localStorage.removeItem('username');
       localStorage.removeItem('role');
       localStorage.removeItem('userId');

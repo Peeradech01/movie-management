@@ -7,6 +7,11 @@ export const authApi = {
     return response.data;
   },
 
+  register: async (username: string, password: string, role: string, firstName: string, lastName: string) => {
+    const response = await apiClient.post('/users', { username, password, role, firstName, lastName });
+    return response.data;
+  },
+
   getProfile: async (): Promise<User> => {
     const response = await apiClient.get('/users/profile');
     return response.data;
