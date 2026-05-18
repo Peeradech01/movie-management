@@ -1,9 +1,11 @@
 import apiClient from './axios';
-import type { Movie } from '../types';
+import type { Movie, PaginatedResponse } from '../types';
 
 export const moviesApi = {
-  getAll: async (): Promise<Movie[]> => {
-    const response = await apiClient.get('/movies');
+  getAll: async (page = 1, limit = 10): Promise<PaginatedResponse<Movie>> => {
+    const response = await apiClient.get('/movies', {
+      params: { page, limit },
+    });
     return response.data;
   },
 

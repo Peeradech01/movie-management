@@ -14,21 +14,29 @@ const MovieModel = types.model('Movie', {
 const MovieStore = types
   .model('MovieStore', {
     movies: types.array(MovieModel),
+    total: types.optional(types.number, 0),
+    currentPage: types.optional(types.number, 1),
+    limit: types.optional(types.number, 10),
     isLoading: types.optional(types.boolean, false),
     error: types.maybeNull(types.string),
   })
   .views((self) => ({
+    get totalPages() {
+      return Math.ceil(self.total / self.limit);
+    },
     get totalMovies() {
-      return self.movies.length;
+      return self.total;
     },
   }))
   .actions((self) => ({
-    fetchMovies: flow(function* () {
+    fetchMovies: flow(function* (page = 1) {
       self.isLoading = true;
       self.error = null;
+      self.currentPage = page;
       try {
-        const movies = yield moviesApi.getAll();
-        self.movies = movies;
+        const result = yield moviesApi.getAll(page, self.limit);
+        self.movies = result.data;
+        self.total = result.total;
       } catch {
         self.error = 'Failed to fetch movies';
       } finally {
@@ -40,8 +48,8 @@ const MovieStore = types
       self.isLoading = true;
       self.error = null;
       try {
-        const movie = yield moviesApi.create(data);
-        self.movies.push(movie);
+        yield moviesApi.create(data);
+        yield (self as any).fetchMovies(1);
       } catch {
         self.error = 'Failed to create movie';
       } finally {
@@ -53,9 +61,8 @@ const MovieStore = types
       self.isLoading = true;
       self.error = null;
       try {
-        const updated = yield moviesApi.update(id, data);
-        const index = self.movies.findIndex((m) => m.id === id);
-        if (index !== -1) self.movies[index] = updated;
+        yield moviesApi.update(id, data);
+        yield (self as any).fetchMovies(self.currentPage);
       } catch {
         self.error = 'Failed to update movie';
       } finally {
@@ -68,7 +75,10 @@ const MovieStore = types
       self.error = null;
       try {
         yield moviesApi.remove(id);
-        self.movies = self.movies.filter((m) => m.id !== id) as typeof self.movies;
+        const newPage = self.movies.length === 1 && self.currentPage > 1
+          ? self.currentPage - 1
+          : self.currentPage;
+        yield (self as any).fetchMovies(newPage);
       } catch {
         self.error = 'Failed to delete movie';
       } finally {
