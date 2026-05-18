@@ -22,7 +22,7 @@ export async function seedDatabase(dataSource: DataSource): Promise<void> {
       },
 
       {
-        username: 'teamlead',
+        username: 'leader',
         password: await bcrypt.hash('123456', 10),
         firstName: 'Mia',
         lastName: 'Thompson',
